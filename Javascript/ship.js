@@ -1,5 +1,15 @@
+// eslint-disable-next-line no-use-before-define, import/prefer-default-export
 export { Ship };
 
-function Ship() {
-  return "Ship";
+class Ship {
+  constructor(length) {
+    this.length = length;
+    this.hitsTaken = 0;
+  }
+
+  hit = () => {
+    this.hitsTaken += 1;
+  };
+
+  isSunk = () => this.hitsTaken === this.length;
 }
