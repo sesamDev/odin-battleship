@@ -7,9 +7,9 @@ describe("Placing ships", () => {
     gameboard.placeShip(1, 1, 1);
     expect(gameboard.activeShips[0].position).toStrictEqual([[1, 1]]);
   });
-  test("Placing 1x3 ship", () => {
+  test("Placing 1x3 ship vertical", () => {
     const gameboard = new Gameboard();
-    gameboard.placeShip(3, 1, 1);
+    gameboard.placeShip(3, 1, 1, "Vertical");
     expect(gameboard.activeShips[0].position).toStrictEqual([
       [1, 1],
       [1, 2],
@@ -17,7 +17,15 @@ describe("Placing ships", () => {
     ]);
   });
 
-  test.skip("Choosing direction and placing ship", () => {});
+  test("Choosing direction and placing ship horizontal", () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(3, 1, 1, "Horizontal");
+    expect(gameboard.activeShips[0].position).toStrictEqual([
+      [1, 1],
+      [2, 1],
+      [3, 1],
+    ]);
+  });
 
   test.skip("Can't place outside of board", () => {});
 
