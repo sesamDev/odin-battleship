@@ -22,7 +22,7 @@ function checkPositionValid(size, x, y, direction) {
   const minGridXY = [1, 1];
   const pos = generateGridPosition(size, x, y, direction);
 
-  for (let index = 0; index < size; index++) {
+  for (let index = 0; index < size; index += 1) {
     if (pos[index][0] > maxGridXY[0] || pos[index][0] < minGridXY[0]) {
       // Need to loop through these [ [ 9, 1 ], [ 10, 1 ], [ 11, 1 ] ]
       return false;
