@@ -27,8 +27,15 @@ describe("Placing ships", () => {
     ]);
   });
 
-  test.skip("Can't place outside of board", () => {});
+  test("Can't place outside of board (Horizontally)", () => {
+    const gameboard = new Gameboard();
+    expect(gameboard.placeShip(3, 9, 1, "Horizontal")).toBe("Invalid placement");
+  });
 
+  test("Can't place outside of board (Vertically)", () => {
+    const gameboard = new Gameboard();
+    expect(gameboard.placeShip(3, 1, 9, "Vertical")).toBe("Invalid placement");
+  });
   test.skip("Can't place on used grid positions", () => {});
 });
 
