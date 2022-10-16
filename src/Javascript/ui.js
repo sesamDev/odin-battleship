@@ -23,10 +23,24 @@ export default class UI {
       for (let j = 0; j < this.gridXY[1]; j += 1) {
         const gridSquare = document.createElement("div");
         gridSquare.classList.add("grid-square");
+        gridSquare.setAttribute("data-pos", `${j + 1}${i + 1}`); // +1 so that grid starts at 1,1
         boardContainer.appendChild(gridSquare);
       }
     }
     fragmnt.appendChild(boardContainer);
     return fragmnt;
+  }
+
+  static showPlacedShips(shipObjects) {
+    const gridSquares = document.querySelectorAll(".grid-square");
+    gridSquares.forEach((gridSquare) => {
+      shipObjects.forEach((ship) => {
+        ship.position.forEach((pos) => {
+          if (`${pos[0]}${pos[1]}` === gridSquare.dataset.pos) {
+            gridSquare.classList.add("ship");
+          }
+        });
+      });
+    });
   }
 }
