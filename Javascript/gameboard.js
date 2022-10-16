@@ -54,6 +54,19 @@ export default class Gameboard {
     return `Nothing hit at ${attackPos}`;
   }
 
+  hasAllShipsSunk() {
+    const shipStatus = [];
+    for (let i = 0; i < this.activeShips.length; i += 1) {
+      const ship = this.activeShips[i];
+      shipStatus.push(ship.shipObj.isSunk());
+    }
+
+    if (shipStatus.includes(false)) {
+      return false;
+    }
+    return true;
+  }
+
   #checkPositionValid(size, x, y, direction) {
     const maxGridXY = [10, 10];
     const minGridXY = [1, 1];

@@ -62,4 +62,18 @@ describe("Handle attacks", () => {
     gameboard.receiveAttack(1, 1);
     expect(gameboard.missedShots.length).not.toBe(0);
   });
+  test("Are some ships still floating?", () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(1, 1, 1, "Horizontal");
+    expect(gameboard.hasAllShipsSunk()).toBe(false);
+  });
+  test("Have all ships been sunk?", () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(1, 1, 1, "Horizontal");
+    gameboard.placeShip(1, 2, 2, "Horizontal");
+    gameboard.receiveAttack(1, 1);
+    gameboard.receiveAttack(2, 2);
+
+    expect(gameboard.hasAllShipsSunk()).toBe(true);
+  });
 });
