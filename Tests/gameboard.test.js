@@ -49,16 +49,11 @@ describe("Handle attacks", () => {
     const attackPos = [2, 1];
     expect(gameboard.receiveAttack(attackPos[0], attackPos[1])).toBe(`Nothing hit at ${attackPos}`);
   });
-  test("Report if ship has been hit", () => {
+
+  test("Trigger hit function on ship if it's hit", () => {
     const gameboard = new Gameboard();
     gameboard.placeShip(3, 1, 1, "Horizontal");
 
     expect(gameboard.receiveAttack(1, 1)).toBe("Ship hit");
-  });
-  test("Trigger hit function on correct ship if it's hit", () => {
-    const gameboard = new Gameboard();
-    gameboard.placeShip(3, 1, 1, "Horizontal");
-
-    expect(gameboard.receiveAttack(1, 1)).toBe("Hit");
   });
 });

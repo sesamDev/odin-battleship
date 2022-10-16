@@ -45,7 +45,7 @@ export default class Gameboard {
       for (let j = 0; j < ship.position.length; j += 1) {
         const position = ship.position[j].toString();
         if (position === attackPos) {
-          return "Ship hit";
+          return ship.shipObj.hit();
         }
       }
     }
