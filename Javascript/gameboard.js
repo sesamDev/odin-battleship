@@ -22,6 +22,7 @@ export default class Gameboard {
   constructor() {
     this.activeShips = [];
     this.occupiedPositions = [];
+    this.missedShots = [];
   }
 
   placeShip = (size, x, y, direction) => {
@@ -49,6 +50,7 @@ export default class Gameboard {
         }
       }
     }
+    this.missedShots.push([x, y]);
     return `Nothing hit at ${attackPos}`;
   }
 

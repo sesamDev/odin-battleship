@@ -56,4 +56,10 @@ describe("Handle attacks", () => {
 
     expect(gameboard.receiveAttack(1, 1)).toBe("Ship hit");
   });
+
+  test("Save coordinates of missed shots so they can be rendered", () => {
+    const gameboard = new Gameboard();
+    gameboard.receiveAttack(1, 1);
+    expect(gameboard.missedShots.length).not.toBe(0);
+  });
 });
