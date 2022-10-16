@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { Ship } from "../Javascript/ship";
+import { Ship } from "../src/Javascript/ship";
 
 describe("Spawn new ship object", () => {
   const spawnedShip = new Ship(5);

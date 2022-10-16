@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import Gameboard from "../Javascript/gameboard";
+import Gameboard from "../src/Javascript/gameboard";
 
 describe("Placing ships", () => {
   test("Placing 1x1 ship", () => {
