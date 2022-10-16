@@ -36,7 +36,11 @@ describe("Placing ships", () => {
     const gameboard = new Gameboard();
     expect(gameboard.placeShip(3, 1, 9, "Vertical")).toBe("Invalid placement");
   });
-  test.skip("Can't place on used grid positions", () => {});
+  test("Can't place on used grid positions", () => {
+    const gameboard = new Gameboard();
+    gameboard.placeShip(3, 1, 1, "Vertical");
+    expect(gameboard.placeShip(3, 1, 1, "Vertical")).toBe("Invalid placement");
+  });
 });
 
 describe.skip("Handle attacks", () => {});
