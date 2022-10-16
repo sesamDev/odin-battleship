@@ -9,6 +9,7 @@ class Ship {
 
   hit = () => {
     this.hitsTaken += 1;
+    return "Ship hit";
   };
 
   isSunk = () => this.hitsTaken === this.length;
