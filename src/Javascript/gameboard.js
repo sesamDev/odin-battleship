@@ -19,6 +19,14 @@ function generateGridPosition(size, x, y, direction) {
 
 // Gameboard factory
 export default class Gameboard {
+  static shipType = {
+    carrier: { size: 5 },
+    battleship: { size: 4 },
+    destroyer: { size: 3 },
+    submarine: { size: 3 },
+    patrolBoat: { size: 2 },
+  };
+
   constructor() {
     this.activeShips = [];
     this.occupiedPositions = [];
