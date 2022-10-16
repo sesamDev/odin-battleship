@@ -38,6 +38,20 @@ export default class Gameboard {
     return "Invalid placement";
   };
 
+  receiveAttack(x, y) {
+    const attackPos = `${x},${y}`;
+    for (let i = 0; i < this.activeShips.length; i += 1) {
+      const ship = this.activeShips[i];
+      for (let j = 0; j < ship.position.length; j += 1) {
+        const position = ship.position[j].toString();
+        if (position === attackPos) {
+          return "Ship hit";
+        }
+      }
+    }
+    return `Nothing hit at ${attackPos}`;
+  }
+
   #checkPositionValid(size, x, y, direction) {
     const maxGridXY = [10, 10];
     const minGridXY = [1, 1];
