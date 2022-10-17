@@ -5,6 +5,7 @@ export default class UI {
 
   static render() {
     this.#appendToBody();
+    // this.#initEventlistners();
   }
 
   static #appendToBody() {
@@ -35,7 +36,7 @@ export default class UI {
         const gridSquare = document.createElement("div");
         gridSquare.classList.add("grid-square");
         gridSquare.setAttribute("id", `P${this.activePlayers}`);
-        gridSquare.setAttribute("data-pos", `${j + 1}${i + 1}`); // +1 so that grid starts at 1,1
+        gridSquare.setAttribute("data-pos", `${j + 1},${i + 1}`); // +1 so that grid starts at 1,1
         boardContainer.appendChild(gridSquare);
       }
     }
@@ -50,11 +51,11 @@ export default class UI {
     } else {
       gridSquares = document.querySelectorAll("#P2");
     }
-    console.log(gridSquares);
+
     gridSquares.forEach((gridSquare) => {
       shipObjects.forEach((ship) => {
         ship.position.forEach((pos) => {
-          if (`${pos[0]}${pos[1]}` === gridSquare.dataset.pos) {
+          if (`${pos[0]}${pos[1]}` === gridSquare.dataset.pos.split(",").join("")) {
             gridSquare.classList.add("ship");
           }
         });
@@ -62,31 +63,24 @@ export default class UI {
     });
   }
 
-  // Not my best function..
+  static renderMissedShots(gameboard, player) {
+    const { missedShots } = gameboard;
+    missedShots.forEach((grid) => {
+      const gridElement = document.querySelector(`#${player}[data-pos="${grid.join(",")}"]`);
+      gridElement.classList.add("missed-shot");
+    });
+  }
+
+  static renderHits(gameboard, player) {
+    const { hits } = gameboard;
+    hits.forEach((hit) => {
+      const gridElement = document.querySelector(`#${player}[data-pos="${hit.join(",")}"]`);
+      gridElement.classList.add("hit");
+    });
+  }
+
   static screenPositionToGridPosition(clickedPosition) {
-    let arr = [];
-    if (clickedPosition.length === 2) {
-      arr = clickedPosition.split("");
-    }
-    if (clickedPosition === "110") {
-      const a = clickedPosition.split("");
-      const b = a[1] + a[2];
-      arr.push(a[0]);
-      arr.push(b);
-    }
-    if (clickedPosition === "101") {
-      const a = clickedPosition.split("");
-      const b = a[0] + a[1];
-      arr.push(b);
-      arr.push(a[2]);
-    }
-    if (clickedPosition === "1010") {
-      const a = clickedPosition.split("");
-      const b = a[0] + a[1];
-      arr.push(b);
-      arr.push(a[2] + a[3]);
-    }
-    console.log(`From UI: ${arr} `);
-    return clickedPosition;
+    const arr = clickedPosition.split(",");
+    return arr;
   }
 }
