@@ -46,3 +46,14 @@
 .hit {
   background-color: green;
 }
+
+.hide {
+  display: none;
+}
+
+.gameover {
+  position: absolute;
+  font-size: 15vw;
+  align-self: center;
+  justify-self: center;
+}

@@ -7,8 +7,7 @@ import "../CSS/style.css";
 // Main game loop
 const playerGameboard = new Gameboard();
 const aiGameboard = new Gameboard();
-let gameOver = false;
-
+let gameover = false;
 const player = new Player("Sebastian");
 const aiPlayer = new Computer("HAL");
 
@@ -31,13 +30,15 @@ UI.render();
 UI.showPlacedShips(playerGameboard.activeShips, "P1");
 UI.showPlacedShips(aiGameboard.activeShips, "P2");
 
+const gameoverText = document.querySelector(".gameover");
+
 // Place ships
 // P1 starts
 player.turn = true;
 const boardContainers = document.querySelectorAll(".board-container");
 boardContainers.forEach((container) => {
   container.addEventListener("click", (e) => {
-    if (!gameOver) {
+    if (!gameover) {
       const { pos } = e.target.dataset;
       const posArray = UI.screenPositionToGridPosition(pos);
       aiGameboard.receiveAttack(posArray[0], posArray[1]);
@@ -48,8 +49,9 @@ boardContainers.forEach((container) => {
       // check if gameover
       console.log(aiGameboard.hasAllShipsSunk());
       if (aiGameboard.hasAllShipsSunk()) {
-        console.log("Gameover!");
-        gameOver = true;
+        console.log("gameover!");
+        gameover = true;
+        gameoverText.classList.remove("hide");
       }
       // switch turn
       if (player.turn) {

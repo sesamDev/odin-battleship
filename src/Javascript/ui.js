@@ -14,7 +14,7 @@ export default class UI {
     const p1Board = this.#createGameboard("Sebastian");
     const p2Board = this.#createGameboard("HAL");
 
-    container.append(p1Board, p2Board);
+    container.append(this.#gameoverScreen(), p1Board, p2Board);
     document.body.append(container);
   }
 
@@ -42,6 +42,15 @@ export default class UI {
     }
     fragmnt.appendChild(boardContainer);
     return fragmnt;
+  }
+
+  static #gameoverScreen() {
+    const gameoverText = document.createElement("h1");
+    gameoverText.innerText = "Gameover!";
+    gameoverText.classList.add("gameover");
+    gameoverText.classList.add("hide");
+
+    return gameoverText;
   }
 
   static showPlacedShips(shipObjects, player) {
