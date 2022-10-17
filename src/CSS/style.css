@@ -38,3 +38,11 @@
 .ship {
   background-color: orange;
 }
+
+.missed-shot {
+  background-color: black;
+}
+
+.hit {
+  background-color: green;
+}
