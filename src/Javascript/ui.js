@@ -1,6 +1,8 @@
 export default class UI {
   static gridXY = [10, 10];
 
+  static activePlayers = 0;
+
   static render() {
     this.#appendToBody();
   }
@@ -15,7 +17,12 @@ export default class UI {
     document.body.append(container);
   }
 
+  static #increaseActivePlayers() {
+    this.activePlayers += 1;
+  }
+
   static #createGameboard(name) {
+    this.#increaseActivePlayers();
     const fragmnt = document.createDocumentFragment();
     const boardContainer = document.createElement("div");
     const playerName = document.createElement("h2");
@@ -27,6 +34,7 @@ export default class UI {
       for (let j = 0; j < this.gridXY[1]; j += 1) {
         const gridSquare = document.createElement("div");
         gridSquare.classList.add("grid-square");
+        gridSquare.setAttribute("id", `P${this.activePlayers}`);
         gridSquare.setAttribute("data-pos", `${j + 1}${i + 1}`); // +1 so that grid starts at 1,1
         boardContainer.appendChild(gridSquare);
       }
@@ -35,8 +43,14 @@ export default class UI {
     return fragmnt;
   }
 
-  static showPlacedShips(shipObjects) {
-    const gridSquares = document.querySelectorAll(".grid-square");
+  static showPlacedShips(shipObjects, player) {
+    let gridSquares;
+    if (player === "P1") {
+      gridSquares = document.querySelectorAll("#P1");
+    } else {
+      gridSquares = document.querySelectorAll("#P2");
+    }
+    console.log(gridSquares);
     gridSquares.forEach((gridSquare) => {
       shipObjects.forEach((ship) => {
         ship.position.forEach((pos) => {
