@@ -31,6 +31,7 @@ export default class Gameboard {
     this.activeShips = [];
     this.occupiedPositions = [];
     this.missedShots = [];
+    this.hits = [];
   }
 
   placeShip = (size, x, y, direction) => {
@@ -54,6 +55,8 @@ export default class Gameboard {
       for (let j = 0; j < ship.position.length; j += 1) {
         const position = ship.position[j].toString();
         if (position === attackPos) {
+          this.hits.push([x, y]);
+
           return ship.shipObj.hit();
         }
       }
@@ -103,5 +106,31 @@ export default class Gameboard {
       }
     }
     return false;
+  }
+
+  static placements = [
+    [
+      [4, 1, "Vertical"],
+      [1, 9, "Horizontal"],
+      [6, 3, "Horizontal"],
+      [8, 7, "Horizontal"],
+      [1, 2, "Horizontal"],
+    ],
+    [
+      [4, 10, "Horizontal"],
+      [4, 5, "Vertical"],
+      [6, 2, "Horizontal"],
+      [7, 5, "Horizontal"],
+      [2, 2, "Vertical"],
+    ],
+  ];
+
+  static placeShipsAtRandomLocation(func) {
+    const arr = Object.values(this.shipType);
+    const rand = Math.floor(Math.random() * 2); // Returns a random integer from 1 to 2:
+    for (let i = 0; i < arr.length; i++) {
+      const ship = arr[i];
+      func(ship.size, this.placements[rand][i][0], this.placements[rand][i][1], this.placements[rand][i][2]);
+    }
   }
 }
