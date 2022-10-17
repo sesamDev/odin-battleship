@@ -4,52 +4,79 @@ import Computer from "./computer";
 import UI from "./ui";
 import "../CSS/style.css";
 
-// Main game loop
+// Create gameboards
 const playerGameboard = new Gameboard();
 const aiGameboard = new Gameboard();
-let gameover = false;
+
+//Create players - need to add option to set player name
 const player = new Player("Sebastian");
 const aiPlayer = new Computer("HAL");
 
-// Just while testing
+// Bool that will be true when all ships have been sunk on one team.
+let gameover = false;
+
+// Just while testing - Replaced with function to place player ships by hand.
 playerGameboard.placeShip(Gameboard.shipType.carrier.size, 10, 1, "Vertical");
 playerGameboard.placeShip(Gameboard.shipType.battleship.size, 1, 2, "Horizontal");
 playerGameboard.placeShip(Gameboard.shipType.destroyer.size, 1, 3, "Horizontal");
 playerGameboard.placeShip(Gameboard.shipType.submarine.size, 1, 4, "Horizontal");
 playerGameboard.placeShip(Gameboard.shipType.patrolBoat.size, 1, 5, "Horizontal");
 
-// aiGameboard.placeShip(Gameboard.shipType.carrier.size, 1, 1, "Horizontal");
-// aiGameboard.placeShip(Gameboard.shipType.battleship.size, 1, 2, "Horizontal");
-// aiGameboard.placeShip(Gameboard.shipType.destroyer.size, 1, 3, "Horizontal");
-// aiGameboard.placeShip(Gameboard.shipType.submarine.size, 1, 4, "Horizontal");
-// aiGameboard.placeShip(Gameboard.shipType.patrolBoat.size, 1, 5, "Horizontal");
-
+// "Randomly" place enemy ships
 Gameboard.placeShipsAtRandomLocation(aiGameboard.placeShip);
+
 // Render UI
 UI.render();
 UI.showPlacedShips(playerGameboard.activeShips, "P1");
-UI.showPlacedShips(aiGameboard.activeShips, "P2");
 
+// Get the gameover screen - To be placed in UI class
 const gameoverText = document.querySelector(".gameover");
 
-// Place ships
+// Slow down speed of game between computer and player turn.
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 // P1 starts
 player.turn = true;
+
+// Get both playerboards - Could be moved to UI class
 const boardContainers = document.querySelectorAll(".board-container");
+
+// Main game loop - Fires with each player click.
 boardContainers.forEach((container) => {
-  container.addEventListener("click", (e) => {
+  container.addEventListener("click", async (e) => {
     if (!gameover) {
+      // Get clicked position
       const { pos } = e.target.dataset;
+
+      // Turn it into an array [x,y]
       const posArray = UI.screenPositionToGridPosition(pos);
+
+      // Passing X and Y
       aiGameboard.receiveAttack(posArray[0], posArray[1]);
-      // render hit if it's a hit
+
+      // Reference to aiPlayer.attack(), returns array [x,y]
+      const aiAttackPos = aiPlayer.attack();
+
+      // Render hit if it's a hit on AI board.
       UI.renderHits(aiGameboard, "P2"); // render hit if it's a hit
-      // else render missed shot
+
+      // Render missed shot on AI board.
       UI.renderMissedShots(aiGameboard, "P2"); // else render missed shot
-      // check if gameover
-      console.log(aiGameboard.hasAllShipsSunk());
-      if (aiGameboard.hasAllShipsSunk()) {
-        console.log("gameover!");
+
+      // Sleep to slow down game tempo
+      await sleep(1000);
+
+      // Attack players board with aiPlayer.attack()
+      playerGameboard.receiveAttack(aiAttackPos[0], aiAttackPos[1]);
+
+      // Render hit if it's a hit on player board.
+      UI.renderHits(playerGameboard, "P1");
+
+      // Render missed shot on player board.
+      UI.renderMissedShots(playerGameboard, "P1");
+
+      // Check if gameover - Need to add who won...
+      if (aiGameboard.hasAllShipsSunk() || playerGameboard.hasAllShipsSunk()) {
         gameover = true;
         gameoverText.classList.remove("hide");
       }
@@ -64,6 +91,3 @@ boardContainers.forEach((container) => {
     }
   });
 });
-// ###Loop starts here###
-// P1 attacks
-// check for hit
