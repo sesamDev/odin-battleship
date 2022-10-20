@@ -57,3 +57,44 @@
   align-self: center;
   justify-self: center;
 }
+
+.ship-container {
+  position: absolute;
+  display: grid;
+  grid-template-rows: repeat(5, var(--grid-square-size));
+  gap: 2px;
+}
+#shipToPick0 {
+  display: grid;
+  grid-template-columns: repeat(5, var(--grid-square-size));
+}
+#shipToPick1 {
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: repeat(4, var(--grid-square-size));
+}
+#shipToPick2 {
+  grid-row: 3/4;
+  display: grid;
+  grid-template-columns: repeat(3, var(--grid-square-size));
+}
+#shipToPick3 {
+  grid-row: 4/5;
+  display: grid;
+  grid-template-columns: repeat(3, var(--grid-square-size));
+}
+#shipToPick4 {
+  grid-row: 5/6;
+  display: grid;
+  grid-template-columns: repeat(2, var(--grid-square-size));
+}
+
+#shipToPick0 > .ship,
+#shipToPick1 > .ship,
+#shipToPick2 > .ship,
+#shipToPick3 > .ship,
+#shipToPick4 > .ship {
+  width: var(--grid-square-size);
+  height: var(--grid-square-size);
+  border: 1px solid black;
+}
