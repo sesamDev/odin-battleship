@@ -11,6 +11,10 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, 1fr);
+  background-color: rgb(223, 223, 223);
+  box-shadow: 0px 0px 27px 8px rgba(0, 0, 0, 0.75) inset;
+  -webkit-box-shadow: 0px 0px 27px 8px rgba(0, 0, 0, 0.75) inset;
+  -moz-box-shadow: 0px 0px 27px 8px rgba(0, 0, 0, 0.75) inset;
 }
 .container > .board-container {
   width: fit-content;
