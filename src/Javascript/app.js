@@ -16,17 +16,17 @@ const aiPlayer = new Computer("HAL");
 let gameover = false;
 
 // Just while testing - Replaced with function to place player ships by hand.
-playerGameboard.placeShip(Gameboard.shipType.carrier.size, 10, 1, "Vertical");
-playerGameboard.placeShip(Gameboard.shipType.battleship.size, 1, 2, "Horizontal");
-playerGameboard.placeShip(Gameboard.shipType.destroyer.size, 1, 3, "Horizontal");
-playerGameboard.placeShip(Gameboard.shipType.submarine.size, 1, 4, "Horizontal");
-playerGameboard.placeShip(Gameboard.shipType.patrolBoat.size, 1, 5, "Horizontal");
+// playerGameboard.placeShip(Gameboard.shipType.carrier.size, 10, 1, "Vertical");
+// playerGameboard.placeShip(Gameboard.shipType.battleship.size, 1, 2, "Horizontal");
+// playerGameboard.placeShip(Gameboard.shipType.destroyer.size, 1, 3, "Horizontal");
+// playerGameboard.placeShip(Gameboard.shipType.submarine.size, 1, 4, "Horizontal");
+// playerGameboard.placeShip(Gameboard.shipType.patrolBoat.size, 1, 5, "Horizontal");
 
 // "Randomly" place enemy ships
 Gameboard.placeShipsAtRandomLocation(aiGameboard.placeShip);
 
 // Render UI
-UI.render();
+UI.render(playerGameboard);
 UI.showPlacedShips(playerGameboard.activeShips, "P1");
 
 // Get the gameover screen - To be placed in UI class
@@ -91,3 +91,38 @@ boardContainers.forEach((container) => {
     }
   });
 });
+
+let ball = document.getElementById("shipToPick0");
+
+// document.addEventListener("mousemove", onMouseMove);
+ball.onmousedown = function (event) {
+  // (1) prepare to moving: make absolute and on top by z-index
+  ball.style.position = "absolute";
+  ball.style.zIndex = 1000;
+
+  // move it out of any current parents directly into body
+  // to make it positioned relative to the body
+  document.body.append(ball);
+
+  // centers the ball at (pageX, pageY) coordinates
+  function moveAt(pageX, pageY) {
+    ball.style.left = pageX - ball.offsetWidth / 5 + "px";
+    ball.style.top = pageY - ball.offsetHeight / 2 + "px";
+  }
+
+  // move our absolutely positioned ball under the pointer
+  moveAt(event.pageX, event.pageY);
+
+  function onMouseMove(event) {
+    moveAt(event.pageX, event.pageY);
+  }
+
+  // (2) move the ball on mousemove
+  document.addEventListener("mousemove", onMouseMove);
+
+  // (3) drop the ball, remove unneeded handlers
+  ball.onmouseup = function () {
+    document.removeEventListener("mousemove", onMouseMove);
+    ball.onmouseup = null;
+  };
+};

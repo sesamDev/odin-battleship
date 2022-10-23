@@ -1,12 +1,14 @@
+import Gameboard from "./gameboard";
+
 export default class UI {
   static gridXY = [10, 10];
 
   static activePlayers = 0;
 
-  static render() {
+  static render(player1) {
     this.#appendToBody();
     // this.#initEventlistners();
-    this.handlePlacingShips();
+    this.handlePlacingShips(player1);
   }
 
   static #appendToBody() {
@@ -116,7 +118,7 @@ export default class UI {
     return arr;
   }
 
-  static handlePlacingShips() {
+  static handlePlacingShips(player1) {
     const numberOfShips = 5;
 
     for (let i = 0; i < numberOfShips; i++) {
@@ -124,9 +126,11 @@ export default class UI {
       // Save starting position
       const startLeft = ship.style.left;
       const startTop = ship.style.top;
+      let hoverOverPos;
 
       // document.addEventListener("mousemove", onMouseMove);
       ship.onmousedown = function (event) {
+        console.log(ship);
         // (1) prepare to moving: make absolute and on top by z-index
         ship.style.position = "absolute";
         ship.style.zIndex = 1000;
@@ -148,13 +152,34 @@ export default class UI {
           moveAt(event.pageX, event.pageY);
         }
 
+        const player = player1;
+
+        document.addEventListener(
+          "mousemove",
+          (e) => {
+            console.clear();
+            let arr = document.elementsFromPoint(e.clientX, e.clientY);
+            let nArr = arr.filter((item) => item.classList.contains("grid-square"));
+            try {
+              hoverOverPos = nArr[0].dataset.pos.split(",");
+              console.log(hoverOverPos);
+            } catch (error) {
+              throw new Error("Not hovering over grid square " + error);
+            }
+          },
+          { passive: true }
+        );
+
         // (2) move the ship on mousemove
         document.addEventListener("mousemove", onMouseMove);
 
         // (3) drop the ship, remove unneeded handlers
         ship.onmouseup = function () {
+          //ship.style.pointerEvents = "all";
+          console.log(player.placeShip(2, parseInt(hoverOverPos[0]), parseInt(hoverOverPos[1]), "Horizontal"));
+          UI.showPlacedShips(player.activeShips, "P1");
+          console.log(ship);
           const shipContainer = document.querySelector(".ship-container");
-          console.log(shipContainer);
           shipContainer.append(ship);
           ship.style.left = startLeft;
           ship.style.top = startTop;
