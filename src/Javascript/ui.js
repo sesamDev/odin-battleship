@@ -130,7 +130,7 @@ export default class UI {
 
       // document.addEventListener("mousemove", onMouseMove);
       ship.onmousedown = function (event) {
-        console.log(ship);
+        console.log(ship.childNodes.length);
         // (1) prepare to moving: make absolute and on top by z-index
         ship.style.position = "absolute";
         ship.style.zIndex = 1000;
@@ -178,8 +178,12 @@ export default class UI {
           //ship.style.pointerEvents = "all";
           if (hoverOverPos !== undefined) {
             if (
-              player.placeShip(2, parseInt(hoverOverPos[0]), parseInt(hoverOverPos[1]), "Horizontal") !==
-              "Invalid placement"
+              player.placeShip(
+                ship.childNodes.length,
+                parseInt(hoverOverPos[0]),
+                parseInt(hoverOverPos[1]),
+                "Horizontal"
+              ) !== "Invalid placement"
             ) {
               console.log("Placed");
               ship.remove();
