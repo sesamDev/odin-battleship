@@ -33,7 +33,7 @@ export default class UI {
     playerName.innerText = name;
     boardContainer.classList.add("board-container");
 
-    boardContainer.appendChild(playerName);
+    fragmnt.appendChild(playerName);
     for (let i = 0; i < this.gridXY[0]; i += 1) {
       for (let j = 0; j < this.gridXY[1]; j += 1) {
         const gridSquare = document.createElement("div");
