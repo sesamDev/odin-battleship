@@ -120,17 +120,23 @@ export default class UI {
 
   static handlePlacingShips(player1) {
     const numberOfShips = 5;
+    let shipDirection = "";
+
+    // Change ship rotation
 
     for (let i = 0; i < numberOfShips; i++) {
       let ship = document.getElementById(`shipToPick${i}`);
+
+      document.addEventListener("mousemove", (e) => {
+        // Remove this when refactoring
+      });
       // Save starting position
       const startLeft = ship.style.left;
       const startTop = ship.style.top;
       let hoverOverPos;
 
-      // document.addEventListener("mousemove", onMouseMove);
       ship.onmousedown = function (event) {
-        console.log(ship.childNodes.length);
+        console.log(ship);
         // (1) prepare to moving: make absolute and on top by z-index
         ship.style.position = "absolute";
         ship.style.zIndex = 1000;
@@ -152,19 +158,32 @@ export default class UI {
           moveAt(event.pageX, event.pageY);
         }
 
+        document.onkeydown = (event) => {
+          if (event.code === "KeyR") {
+            console.log("Rotate ship direction");
+            ship.classList.toggle("vertical");
+            if (ship.classList.contains("vertical")) {
+              shipDirection = "Vertical";
+            } else {
+              shipDirection = "Horizontal";
+            }
+          }
+        };
+
         const player = player1;
 
         document.addEventListener(
           "mousemove",
           (e) => {
             console.clear();
+            console.log(ship);
             let arr = document.elementsFromPoint(e.clientX, e.clientY);
             let nArr = arr.filter((item) => item.classList.contains("grid-square"));
             try {
               hoverOverPos = nArr[0].dataset.pos.split(",");
               console.log(hoverOverPos);
             } catch (error) {
-              throw "Not hovering over grid square " + error;
+              console.log("Not hovering over grid square " + error);
             }
           },
           { passive: true }
@@ -176,28 +195,31 @@ export default class UI {
         // (3) drop the ship, remove unneeded handlers
         ship.onmouseup = function () {
           //ship.style.pointerEvents = "all";
+          console.log("Mouse up!");
           if (hoverOverPos !== undefined) {
             if (
               player.placeShip(
                 ship.childNodes.length,
                 parseInt(hoverOverPos[0]),
                 parseInt(hoverOverPos[1]),
-                "Horizontal"
+                shipDirection
               ) !== "Invalid placement"
             ) {
               console.log("Placed");
               ship.remove();
-            } else {
-              console.log("Not placed");
-              const shipContainer = document.querySelector(".ship-container");
-              shipContainer.append(ship);
-              ship.style.left = startLeft;
-              ship.style.top = startTop;
-              document.removeEventListener("mousemove", onMouseMove);
-              ship.onmouseup = null;
+              UI.showPlacedShips(player.activeShips, "P1");
+              return;
             }
-            UI.showPlacedShips(player.activeShips, "P1");
           }
+          ship.classList.remove("vertical");
+          shipDirection = "Horizontal";
+          console.log("Not placed");
+          const shipContainer = document.querySelector(".ship-container");
+          shipContainer.append(ship);
+          ship.style.left = startLeft;
+          ship.style.top = startTop;
+          document.removeEventListener("mousemove", onMouseMove);
+          ship.onmouseup = null;
         };
       };
     }
