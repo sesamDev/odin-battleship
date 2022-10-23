@@ -164,7 +164,7 @@ export default class UI {
               hoverOverPos = nArr[0].dataset.pos.split(",");
               console.log(hoverOverPos);
             } catch (error) {
-              throw new Error("Not hovering over grid square " + error);
+              throw "Not hovering over grid square " + error;
             }
           },
           { passive: true }
@@ -176,15 +176,24 @@ export default class UI {
         // (3) drop the ship, remove unneeded handlers
         ship.onmouseup = function () {
           //ship.style.pointerEvents = "all";
-          console.log(player.placeShip(2, parseInt(hoverOverPos[0]), parseInt(hoverOverPos[1]), "Horizontal"));
-          UI.showPlacedShips(player.activeShips, "P1");
-          console.log(ship);
-          const shipContainer = document.querySelector(".ship-container");
-          shipContainer.append(ship);
-          ship.style.left = startLeft;
-          ship.style.top = startTop;
-          document.removeEventListener("mousemove", onMouseMove);
-          ship.onmouseup = null;
+          if (hoverOverPos !== undefined) {
+            if (
+              player.placeShip(2, parseInt(hoverOverPos[0]), parseInt(hoverOverPos[1]), "Horizontal") !==
+              "Invalid placement"
+            ) {
+              console.log("Placed");
+              ship.remove();
+            } else {
+              console.log("Not placed");
+              const shipContainer = document.querySelector(".ship-container");
+              shipContainer.append(ship);
+              ship.style.left = startLeft;
+              ship.style.top = startTop;
+              document.removeEventListener("mousemove", onMouseMove);
+              ship.onmouseup = null;
+            }
+            UI.showPlacedShips(player.activeShips, "P1");
+          }
         };
       };
     }
